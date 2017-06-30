@@ -1,6 +1,8 @@
 package com.hexpay.http.client.conn;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -8,6 +10,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -37,11 +40,16 @@ public class CustomHttpClient
     SSLSocketFactory sf = null;
     try
     {
-      KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-      trustStore.load(null, null);
+      KeyStore trustStore = KeyStore.getInstance("JKS");
+      InputStream inputStream = new FileInputStream("G:/SSL/keytool/client.truststore");
+      trustStore.load(inputStream, "123456".toCharArray());
       sf = new MySSLSocketFactory(trustStore);
       sf
         .setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+      
+//      trustStore.load(inputStream, "123456".toCharArray());
+//      sf = new SSLSocketFactory(trustStore);
+//      sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
     }
     catch (KeyManagementException e) {
       System.out.println(e.getMessage());
@@ -66,7 +74,7 @@ public class CustomHttpClient
     schReg.register(
       new Scheme("http", 
       PlainSocketFactory.getSocketFactory(), 80));
-    schReg.register(new Scheme("https", sf, 443));
+    schReg.register(new Scheme("https", sf, 8443));
 
     PoolingClientConnectionManager conMgr = new PoolingClientConnectionManager(
       schReg);

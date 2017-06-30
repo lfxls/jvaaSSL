@@ -383,10 +383,11 @@ public class HxHttp
 //			 total_fee,spbill_create_ip,"10","127.0.0.1:8888/pay", "node","WeChatHxingHexpay141805144144144");
 	  
 	  HttpRequestSimple httpRequestSimple = HttpRequestSimple.getInstance();
-	  String url = "https://sandbox.surecashbd.com/api/payment/process/status/hxpy/7051545894";
-	  String body = "";
-//	  String resp = httpRequestSimple.postSendHttp(url, body);
-	  String resp = httpRequestSimple.getSendHttp(url);
+//	  String url = "https://sandbox.surecashbd.com/api/payment/process/status/hxpy/7051545894";
+	  String url = "https://172.16.251.91:8443/httpServletTest/servlet2";
+	  String body = "name=sss";
+	  String resp = httpRequestSimple.postSendHttp(url, body);
+//	  String resp = httpRequestSimple.getSendHttp(url);
 	  System.out.println(resp);
 	  
 	  
